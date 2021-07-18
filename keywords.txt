@@ -10,7 +10,7 @@ EthernetWebServer	KEYWORD1
 HTTPMethod	KEYWORD1
 HTTPUploadStatus  KEYWORD1
 HTTPClientStatus  KEYWORD1
-HTTPUpload  KEYWORD1
+eHTTPUpload  KEYWORD1
 HTTPAuthMethod  KEYWORD1
 
 #######################
@@ -94,7 +94,7 @@ urlDecode KEYWORD2
 _parseFormUploadAborted KEYWORD2
 
 #######################
-# RequestHandler
+# eRequestHandler
 #######################
 canHandle KEYWORD2
 canUpload KEYWORD2

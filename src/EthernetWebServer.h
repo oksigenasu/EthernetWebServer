@@ -42,7 +42,7 @@
 
 #pragma once
 
-#define ETHERNET_WEBSERVER_VERSION      "EthernetWebServer v1.5.0"
+#define ETHERNET_WEBSERVER_VERSION      "EthernetWebServer v1.5.0c"
 
 #define USE_NEW_WEBSERVER_VERSION       true
 
@@ -123,9 +123,15 @@
   #define PGM_VOID_P const void *
 #endif
 
-//////
+#if !(NO_WIFI)
+  #if (ESP8266)
+    #include <ESP8266WebServer.h>
+  #elif (ESP32)
+    #include <WebServer.h>
+  #endif
+#endif
 
-
+#ifdef NO_WIFI
 enum HTTPMethod 
 { 
   HTTP_ANY, 
@@ -158,6 +164,7 @@ enum HTTPAuthMethod
   BASIC_AUTH, 
   DIGEST_AUTH 
 };
+#endif
 
 #define HTTP_DOWNLOAD_UNIT_SIZE 1460
 
@@ -187,9 +194,9 @@ typedef struct
   size_t  currentSize;    // size of data currently in buf
   size_t  contentLength;  // size of entire post request, file size + headers and other request data.
   uint8_t buf[HTTP_UPLOAD_BUFLEN];
-} HTTPUpload;
+} eHTTPUpload;
 
-#include "detail/RequestHandler.h"
+#include "detail/eRequestHandler.h"
 #if (ESP32 || ESP8266)
     #include "FS.h"
 #endif
@@ -216,7 +223,7 @@ class EthernetWebServer
     void on(const String &uri, THandlerFunction handler);
     void on(const String &uri, HTTPMethod method, THandlerFunction fn);
     void on(const String &uri, HTTPMethod method, THandlerFunction fn, THandlerFunction ufn);
-    void addHandler(RequestHandler* handler);
+    void addHandler(eRequestHandler* handler);
     void onNotFound(THandlerFunction fn);  //called when handler is not assigned
     void onFileUpload(THandlerFunction fn); //handle file uploads
 
@@ -236,12 +243,12 @@ class EthernetWebServer
     }
     
     #if USE_NEW_WEBSERVER_VERSION
-    HTTPUpload& upload() 
+    eHTTPUpload& upload() 
     {
       return *_currentUpload;
     }
     #else
-    HTTPUpload& upload() 
+    eHTTPUpload& upload() 
     {
       return _currentUpload;
     }
@@ -289,7 +296,7 @@ class EthernetWebServer
     #if !(ESP32 || ESP8266)
     template<typename T> size_t streamFile(T &file, const String& contentType) 
     {
-      using namespace mime;
+      using namespace emime;
       setContentLength(file.size());
       
       if (String(file.name()).endsWith(mimeTable[gz].endsWith) && contentType != mimeTable[gz].mimeType && contentType != mimeTable[none].mimeType) 
@@ -324,7 +331,7 @@ class EthernetWebServer
     #endif
 
   protected:
-    void _addRequestHandler(RequestHandler* handler);
+    void _addRequestHandler(eRequestHandler* handler);
     void _handleRequest();
     void _finalizeResponse();
     bool _parseRequest(EthernetClient& client);
@@ -381,9 +388,9 @@ class EthernetWebServer
     HTTPClientStatus  _currentStatus;
     unsigned long     _statusChange;
 
-    RequestHandler*   _currentHandler;
-    RequestHandler*   _firstHandler;
-    RequestHandler*   _lastHandler;
+    eRequestHandler*   _currentHandler;
+    eRequestHandler*   _firstHandler;
+    eRequestHandler*   _lastHandler;
     THandlerFunction  _notFoundHandler;
     THandlerFunction  _fileUploadHandler;
 
@@ -392,12 +399,12 @@ class EthernetWebServer
     
     //KH
     #if USE_NEW_WEBSERVER_VERSION
-    HTTPUpload*       _currentUpload;
+    eHTTPUpload*       _currentUpload;
     int               _postArgsLen;
     RequestArgument*  _postArgs;
     
     #else
-    HTTPUpload        _currentUpload;
+    eHTTPUpload        _currentUpload;
     #endif
     
     int               _headerKeysCount;
@@ -411,5 +418,5 @@ class EthernetWebServer
 };
 
 #include "EthernetWebServer-impl.h"
-#include "Parsing-impl.h"
+#include "eParsing-impl.h"
 

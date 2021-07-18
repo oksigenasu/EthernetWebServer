@@ -230,7 +230,7 @@ bool EthernetWebServer::_parseRequest(EthernetClient& client)
   ET_LOGDEBUG1(F("search: "), searchStr);
 
   //attach handler
-  RequestHandler* handler;
+  eRequestHandler* handler;
 
   for (handler = _firstHandler; handler; handler = handler->next())
   {
@@ -828,9 +828,9 @@ bool EthernetWebServer::_parseForm(EthernetClient& client, const String& boundar
           }
           else
           {
-            //_currentUpload.reset(new HTTPUpload());
+            //_currentUpload.reset(new eHTTPUpload());
             if (!_currentUpload)
-              _currentUpload = new HTTPUpload();
+              _currentUpload = new eHTTPUpload();
 
             _currentUpload->status = UPLOAD_FILE_START;
             _currentUpload->name = argName;

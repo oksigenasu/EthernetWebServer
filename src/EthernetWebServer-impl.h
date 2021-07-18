@@ -45,9 +45,9 @@
 #include <Arduino.h>
 #include <libb64/cencode.h>
 #include "EthernetWebServer.h"
-#include "detail/RequestHandlersImpl.h"
+#include "detail/eRequestHandlersImpl.h"
 #include "detail/Debug.h"
-#include "detail/mimetable.h"
+#include "detail/emimetable.h"
 
 const char * AUTHORIZATION_HEADER = "Authorization";
 
@@ -73,11 +73,11 @@ EthernetWebServer::~EthernetWebServer()
     delete[]_currentHeaders;
     
   _headerKeysCount = 0;
-  RequestHandler* handler = _firstHandler;
+  eRequestHandler* handler = _firstHandler;
   
   while (handler) 
   {
-    RequestHandler* next = handler->next();
+    eRequestHandler* next = handler->next();
     delete handler;
     handler = next;
   }
@@ -163,12 +163,12 @@ void EthernetWebServer::on(const String &uri, HTTPMethod method, EthernetWebServ
   _addRequestHandler(new FunctionRequestHandler(fn, ufn, uri, method));
 }
 
-void EthernetWebServer::addHandler(RequestHandler* handler) 
+void EthernetWebServer::addHandler(eRequestHandler* handler) 
 {
   _addRequestHandler(handler);
 }
 
-void EthernetWebServer::_addRequestHandler(RequestHandler* handler) 
+void EthernetWebServer::_addRequestHandler(eRequestHandler* handler) 
 {
   if (!_lastHandler) 
   {
@@ -422,7 +422,7 @@ void EthernetWebServer::_prepareHeader(String& response, int code, const char* c
   response += _responseCodeToString(code);
   response += "\r\n";
 
- using namespace mime;
+ using namespace emime;
  
   if (!content_type)
       content_type = mimeTable[html].mimeType;
@@ -678,7 +678,7 @@ void EthernetWebServer::serveStatic(const char* uri, FS& fs, const char* path, c
 
 void EthernetWebServer::_streamFileCore(const size_t fileSize, const String &fileName, const String &contentType)
 {
-  using namespace mime;
+  using namespace emime;
   setContentLength(fileSize);
   if (fileName.endsWith(String(FPSTR(mimeTable[gz].endsWith))) &&
       contentType != String(FPSTR(mimeTable[gz].mimeType)) &&
@@ -838,7 +838,7 @@ void EthernetWebServer::_handleRequest()
   
   if (!handled) 
   {
-    using namespace mime;
+    using namespace emime;
     
     send(404, mimeTable[html].mimeType, String("Not found: ") + _currentUri);
     handled = true;

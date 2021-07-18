@@ -44,14 +44,14 @@
 
 #pragma once
 
-#include "RequestHandler.h"
+#include "eRequestHandler.h"
 #include "esp_detail/mimetable.h"
 #include "FS.h"
 #include "WString.h"
 #include <MD5Builder.h>
 #include <base64.h>
 
-class FunctionRequestHandler : public RequestHandler
+class FunctionRequestHandler : public eRequestHandler
 {
   public:
 
@@ -102,7 +102,7 @@ class FunctionRequestHandler : public RequestHandler
       return true;
     }
 
-    void upload(EthernetWebServer& server, String requestUri, HTTPUpload& upload) override
+    void upload(EthernetWebServer& server, String requestUri, eHTTPUpload& upload) override
     {
       ETW_UNUSED(server);
       ETW_UNUSED(upload);
@@ -118,7 +118,7 @@ class FunctionRequestHandler : public RequestHandler
     HTTPMethod _method;
 };
 
-class StaticRequestHandler : public RequestHandler {
+class StaticRequestHandler : public eRequestHandler {
     using WebServerType = EthernetWebServer;
 public:
     StaticRequestHandler(FS& fs, const char* path, const char* uri, const char* cache_header)

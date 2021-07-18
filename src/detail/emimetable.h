@@ -42,10 +42,10 @@
  
 #pragma once
 
-#ifndef __MIMETABLE_H__
-#define __MIMETABLE_H__
+#ifndef __EMIMETABLE_H__
+#define __EMIMETABLE_H__
 
-namespace mime
+namespace emime
 {
 
   enum type

@@ -43,10 +43,10 @@
 #pragma once
 
 #if !(ESP32 || ESP8266)
-#include "RequestHandler.h"
+#include "eRequestHandler.h"
 #include "mimetable.h"
 
-class FunctionRequestHandler : public RequestHandler
+class FunctionRequestHandler : public eRequestHandler
 {
   public:
 
@@ -97,7 +97,7 @@ class FunctionRequestHandler : public RequestHandler
       return true;
     }
 
-    void upload(EthernetWebServer& server, String requestUri, HTTPUpload& upload) override
+    void upload(EthernetWebServer& server, String requestUri, eHTTPUpload& upload) override
     {
       ETW_UNUSED(server);
       ETW_UNUSED(upload);
@@ -113,7 +113,7 @@ class FunctionRequestHandler : public RequestHandler
     HTTPMethod _method;
 };
 
-class StaticRequestHandler : public RequestHandler
+class StaticRequestHandler : public eRequestHandler
 {
   public:
 

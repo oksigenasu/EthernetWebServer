@@ -232,7 +232,7 @@ void handleFileUpload()
     return;
   }
 
-  HTTPUpload& upload = server.upload();
+  eHTTPUpload& upload = server.upload();
 
   if (upload.status == UPLOAD_FILE_START)
   {

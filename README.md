@@ -1039,7 +1039,7 @@ Example:
   const String & uri(); // get the current uri
   HTTPMethod  method(); // get the current method 
   WiFiClient client(); // get the current client
-  HTTPUpload & upload(); // get the current upload
+  eHTTPUpload & upload(); // get the current upload
   void setContentLength(); // set content length
   void sendHeader(); // send HTTP header
   void sendContent(); // send content

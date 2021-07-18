@@ -1,5 +1,5 @@
 /****************************************************************************************************************************
-   RequestHandler.h - Dead simple web-server.
+   eRequestHandler.h - Dead simple web-server.
    For Ethernet shields
 
    EthernetWebServer is a library for the Ethernet shields to run WebServer
@@ -47,11 +47,11 @@
 #endif
 
 
-class RequestHandler
+class eRequestHandler
 {
   public:
 
-    virtual ~RequestHandler() { }
+    virtual ~eRequestHandler() { }
 
     virtual bool canHandle(HTTPMethod method, String uri)
     {
@@ -77,25 +77,25 @@ class RequestHandler
       return false;
     }
 
-    virtual void upload(EthernetWebServer& server, String requestUri, HTTPUpload& upload) 
+    virtual void upload(EthernetWebServer& server, String requestUri, eHTTPUpload& upload) 
     {
       ETW_UNUSED(server);
       ETW_UNUSED(requestUri);
       ETW_UNUSED(upload);
     }
 
-    RequestHandler* next()
+    eRequestHandler* next()
     {
       return _next;
     }
 
-    void next(RequestHandler* r)
+    void next(eRequestHandler* r)
     {
       _next = r;
     }
 
   private:
 
-    RequestHandler* _next = nullptr;
+    eRequestHandler* _next = nullptr;
 };
 
