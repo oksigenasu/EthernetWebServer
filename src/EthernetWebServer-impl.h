@@ -49,7 +49,9 @@
 #include "detail/Debug.h"
 #include "detail/emimetable.h"
 
+#if !(ESP8266)
 const char * AUTHORIZATION_HEADER = "Authorization";
+#endif
 
 EthernetWebServer::EthernetWebServer(int port)
   : _server(port)
